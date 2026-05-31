@@ -85,7 +85,6 @@ void display() {
 
     printf("\n");
 }
-
 void bankersAlgorithm() {
     bool finished[MAX] = {false};
     int safeSequence[MAX];
@@ -122,10 +121,9 @@ void bankersAlgorithm() {
             return;
         }
     }
-
     printf("\nSystem is in SAFE state\nSafe sequence: ");
     for (int i = 0; i < numProcesses; i++) {
         printf("P%d ", safeSequence[i]);
     }
     printf("\n");
-}
+}d
