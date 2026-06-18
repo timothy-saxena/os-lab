@@ -648,3 +648,595 @@ void display() {
 
     printf("\n");
 }
+
+/* ##### fcfs*/
+#include <stdio.h>
+int main() {
+    int n;
+    printf("Enter number of processes. \n");
+    scanf("%d", &n);
+
+    int burstTime[10];
+    for (int i = 0; i < n; i++) {
+        printf("Enter BT of P%d: \n", i + 1);
+        scanf("%d", &burstTime[i]);
+    }
+
+    int wt[10];
+    int turnAroundtime[10];
+
+    int totalWT = 0;
+    int totalTAT = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (i == 0) {
+            wt[i] = 0;
+        } else {
+            wt[i] = wt[i - 1] + burstTime[i - 1];
+        }
+        turnAroundtime[i] = wt[i] + burstTime[i];
+
+        totalTAT += turnAroundtime[i];
+        totalWT += wt[i];
+    }
+
+    printf("\n FCFS \n");
+    printf("P\tBT\tWT\tTAT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\n", i + 1, burstTime[i], wt[i],
+               turnAroundtime[i]);
+    }
+
+    printf("\n Average WT: %.2f", (float)totalWT / n);
+    printf("\n Average TAT: %.2f", (float)totalTAT / n);
+}
+/* ##### sjf*/
+#include <stdio.h>
+int main() {
+    int n;
+    printf("Enter number of processes. \n");
+    scanf("%d", &n);
+
+    int burstTime[10];
+    int processID[10];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter BT of P%d: \n", i + 1);
+        scanf("%d", &burstTime[i]);
+        processID[i] = i + 1;
+    }
+
+    for (int i = n - 1; i > 0; i--) {
+        for (int j = 0; j < i; j++) {
+            if (burstTime[j] > burstTime[j + 1]) {
+                int temp = burstTime[j];
+                burstTime[j] = burstTime[j + 1];
+                burstTime[j + 1] = temp;
+
+                temp = processID[j];
+                processID[j] = processID[j + 1];
+                processID[j + 1] = temp;
+            }
+        }
+    }
+
+    int wt[10];
+    int turnAroundtime[10];
+
+    int totalWT = 0;
+    int totalTAT = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (i == 0) {
+            wt[i] = 0;
+        } else {
+            wt[i] = wt[i - 1] + burstTime[i - 1];
+        }
+        turnAroundtime[i] = wt[i] + burstTime[i];
+
+        totalTAT += turnAroundtime[i];
+        totalWT += wt[i];
+    }
+
+    printf("\n SJF \n");
+    printf("P\tBT\tWT\tTAT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\n", processID[i], burstTime[i], wt[i],
+               turnAroundtime[i]);
+    }
+
+    printf("\n Average WT: %.2f", (float)totalWT / n);
+    printf("\n Average TAT: %.2f", (float)totalTAT / n);
+}
+/* ##### pri*/
+#include <stdio.h>
+int main() {
+    int n;
+    printf("Enter number of processes. \n");
+    scanf("%d", &n);
+
+    int burstTime[10];
+    int processID[10];
+    int priority[10];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter Priority of P%d: \n", i + 1);
+        scanf("%d", &priority[i]);
+        printf("Enter BT of P%d: \n", i + 1);
+        scanf("%d", &burstTime[i]);
+        processID[i] = i + 1;
+    }
+
+    for (int i = n - 1; i > 0; i--) {
+        for (int j = 0; j < i; j++) {
+            if (priority[j] > priority[j + 1]) {
+                int temp = priority[j];
+                priority[j] = priority[j + 1];
+                priority[j + 1] = temp;
+
+                temp = processID[j];
+                processID[j] = processID[j + 1];
+                processID[j + 1] = temp;
+
+                temp = burstTime[j];
+                burstTime[j] = burstTime[j + 1];
+                burstTime[j + 1] = temp;
+            }
+        }
+    }
+
+    int wt[10];
+    int turnAroundtime[10];
+
+    int totalWT = 0;
+    int totalTAT = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (i == 0) {
+            wt[i] = 0;
+        } else {
+            wt[i] = wt[i - 1] + burstTime[i - 1];
+        }
+        turnAroundtime[i] = wt[i] + burstTime[i];
+
+        totalTAT += turnAroundtime[i];
+        totalWT += wt[i];
+    }
+
+    printf("\n Priority \n");
+    printf("P\tPR\tBT\tWT\tTAT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\t%d\n", processID[i], priority[i], burstTime[i],
+               wt[i], turnAroundtime[i]);
+    }
+
+    printf("\n Average WT: %.2f", (float)totalWT / n);
+    printf("\n Average TAT: %.2f", (float)totalTAT / n);
+}
+/* ##### rr*/
+#include <stdio.h>
+int main() {
+    /*
+        1. input n,tq, bt
+        2. wt,rt,tat arrays
+        3. rr while loop
+        4. find tat, totals
+        5. print
+        6. averages
+
+    */
+    int n;
+    printf("No of P: \n");
+    scanf("%d", &n);
+
+    int tq;
+    printf("TQ: \n");
+    scanf("%d", &tq);
+
+    int burst_time[10];
+    int rem_time[10];
+    int wait_time[10];
+    int turnaround_time[10];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter Burst time of P%d: ", i + 1);
+        scanf("%d", &burst_time[i]);
+        rem_time[i] = burst_time[i];
+    }
+
+    int allDone = 0;
+    int current_time = 0;
+
+    while (!allDone) {
+        allDone = 1;
+        for (int i = 0; i < n; i++) {
+            if (rem_time[i] > 0) {
+                allDone = 0;
+                if (rem_time[i] > tq) {
+                    current_time += tq;
+                    rem_time[i] -= tq;
+                } else {
+                    current_time += rem_time[i];
+                    rem_time[i] = 0;
+                    wait_time[i] = current_time - burst_time[i];
+                }
+            }
+        }
+    }
+
+    int totalWT = 0;
+    int totalTAT = 0;
+    for (int i = 0; i < n; i++) {
+        turnaround_time[i] = wait_time[i] + burst_time[i];
+        totalWT += wait_time[i];
+        totalTAT += turnaround_time[i];
+    }
+
+    printf("\n RR \n");
+    printf("PID\tBT\tWT\tTAT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\n", i + 1, burst_time[i], wait_time[i],
+               turnaround_time[i]);
+    }
+
+    printf("Average WT: %.2f \n ", (float)totalWT / n);
+    printf("Average TAT: %.2f \n", (float)totalTAT / n);
+}
+/* ##### fcfs at*/
+#include <stdio.h>
+int main() {
+    /*
+    1. input pid,bt and at
+    2. sort acc to at
+    3. schedule it
+    4. print table
+    5. find averages
+    */
+
+    int n;
+    printf("No of P: \n");
+    scanf("%d", &n);
+
+    int process_id[10];
+    int arrival_time[10];
+    int burst_time[10];
+    int wait_time[10];
+    int turnaround_time[10];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter Arrival time of P%d: ", i + 1);
+        scanf("%d", &arrival_time[i]);
+        printf("Enter Burst time of P%d: ", i + 1);
+        scanf("%d", &burst_time[i]);
+        process_id[i] = i + 1;
+    }
+
+    for (int i = n - 1; i > 0; i--) {
+        for (int j = 0; j < i; j++) {
+            if (arrival_time[j] > arrival_time[j + 1]) {
+                int temp;
+                temp = arrival_time[j];
+                arrival_time[j] = arrival_time[j + 1];
+                arrival_time[j + 1] = temp;
+
+                temp = burst_time[j];
+                burst_time[j] = burst_time[j + 1];
+                burst_time[j + 1] = temp;
+
+                temp = process_id[j];
+                process_id[j] = process_id[j + 1];
+                process_id[j + 1] = temp;
+            }
+        }
+    }
+    int start_time = 0;
+    int totalWT = 0;
+    int totalTAT = 0;
+    for (int i = 0; i < n; i++) {
+        if (start_time < arrival_time[i]) {
+            start_time = arrival_time[i];
+        }
+        wait_time[i] = start_time - arrival_time[i];
+        turnaround_time[i] = wait_time[i] + burst_time[i];
+        start_time += burst_time[i];
+    }
+
+    printf("\n FCFS AT \n");
+    printf("PID\tAT\tBT\tWT\tTAT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\t%d\n", process_id[i], arrival_time[i],
+               burst_time[i], wait_time[i], turnaround_time[i]);
+        totalWT += wait_time[i];
+        totalTAT += turnaround_time[i];
+    }
+
+    printf("Average WT: %.2f \n ", (float)totalWT / n);
+    printf("Average TAT: %.2f \n", (float)totalTAT / n);
+}
+/* ##### sjf at*/
+#include <stdio.h>
+int main() {
+    /*
+    1. input n,at,bt
+    2. pid,bt,wt,tat,rt arrays
+    3. rt[i] = bt[i]
+    4. while(completed < n)
+    5. find tat & totals
+    6. print and averages
+     */
+    int n;
+    printf("No of P: \n");
+    scanf("%d", &n);
+
+    int arrival_time[10];
+    int rem_time[10];
+    int burst_time[10];
+    int wait_time[10];
+    int turnaround_time[10];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter Arrival time of P%d: ", i + 1);
+        scanf("%d", &arrival_time[i]);
+        printf("Enter Burst time of P%d: ", i + 1);
+        scanf("%d", &burst_time[i]);
+        rem_time[i] = burst_time[i];
+    }
+    int completed = 0;
+    int currentTime = 0;
+    while (completed < n) {
+        int minTime = 999;
+        int shortest_job_id = -1;
+        for (int i = 0; i < n; i++) {
+            if (rem_time[i] > 0 && arrival_time[i] <= currentTime &&
+                rem_time[i] < minTime) {
+                minTime = rem_time[i];
+                shortest_job_id = i;
+            }
+        }
+        if (shortest_job_id == -1) {
+            currentTime++;
+            continue;
+        }
+        rem_time[shortest_job_id]--;
+        currentTime++;
+
+        if (rem_time[shortest_job_id] == 0) {
+            completed++;
+            turnaround_time[shortest_job_id] =
+                currentTime - arrival_time[shortest_job_id];
+            wait_time[shortest_job_id] =
+                turnaround_time[shortest_job_id] - burst_time[shortest_job_id];
+        }
+    }
+
+    int totalWT = 0;
+    int totalTAT = 0;
+    printf("\n SRTF \n");
+    printf("PID\tAT\tBT\tWT\tTAT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\t%d\n", i + 1, arrival_time[i], burst_time[i],
+               wait_time[i], turnaround_time[i]);
+
+        totalWT += wait_time[i];
+        totalTAT += turnaround_time[i];
+    }
+    printf("Average WT: %.2f \n ", (float)totalWT / n);
+    printf("Average TAT: %.2f \n", (float)totalTAT / n);
+}
+
+/*
+SRTF schedule the processes each unit time
+*/
+
+/*
+int completed = 0;
+int currentTime = 0;
+while(completed < n){
+    int SJ_id = -1;
+    int SJ_rem_tim = 999;
+
+    // find the SJ
+    for(int i = 0; i < n; i++){
+        // process should have arrived
+        // process must not be completed
+        // process RT must be less that minRT
+        if(arrivalTime[i] <= currentTime && remainingTime[i]>0 &&
+remainingTime[i] < SJ_rem_tim){ SJ_id = i; SJ_rem_tim = remainingTime[i];
+        }
+    }
+
+    // incase there is no SJ
+    if(SJ_id == -1){
+        currentTime++;
+        continue;
+    }
+
+    // exe this Sj for 1 unit time
+    remainingTime[SJ_id]--;
+    currentTime++;
+
+    // check if SJ_id is completed
+    if(remainingTime[SJ_id] == 0){
+        completed++;
+        turnaround_time[SJ_id] = currentTime - arrivalTime[SJ_id];
+        wait_time[SJ_id] = turnaround_time[SJ_id]- burstTime[SJ_id];
+    }
+}
+*/
+/* ##### pri at*/
+#include <limits.h>
+#include <stdio.h>
+int main() {
+    int n;
+    printf("No of P: \n");
+    scanf("%d", &n);
+
+    int arrival_time[10];
+    int pri[10];
+    int rem_time[10];
+    int burst_time[10];
+    int wait_time[10];
+    int turnaround_time[10];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter Arrival time of P%d: ", i + 1);
+        scanf("%d", &arrival_time[i]);
+        printf("Enter Burst time of P%d: ", i + 1);
+        scanf("%d", &burst_time[i]);
+        printf("Enter Priority of P%d: ", i + 1);
+        scanf("%d", &pri[i]);
+        rem_time[i] = burst_time[i];
+    }
+
+    int completed = 0;
+    int currentTime = 0;
+
+    while (completed < n) {
+        int high_job_id = -1;
+        int highestPriority = INT_MAX;
+        for (int i = 0; i < n; i++) {
+            if (rem_time[i] > 0 && arrival_time[i] <= currentTime &&
+                pri[i] < highestPriority) {
+                highestPriority = pri[i];
+                high_job_id = i;
+            }
+        }
+        if (high_job_id == -1) {
+            currentTime++;
+            continue;
+        }
+        rem_time[high_job_id]--;
+        currentTime++;
+
+        if (rem_time[high_job_id] == 0) {
+            completed++;
+            turnaround_time[high_job_id] =
+                currentTime - arrival_time[high_job_id];
+            wait_time[high_job_id] =
+                turnaround_time[high_job_id] - burst_time[high_job_id];
+        }
+    }
+
+    int totalWT = 0;
+    int totalTAT = 0;
+    printf("\n PRI AT \n");
+    printf("PID\tAT\tBT\tPRI\tWT\tTAT\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%d\t%d\t%d\t%d\t%d\n", i + 1, arrival_time[i],
+               burst_time[i], pri[i], wait_time[i], turnaround_time[i]);
+
+        totalWT += wait_time[i];
+        totalTAT += turnaround_time[i];
+    }
+    printf("Average WT: %.2f \n ", (float)totalWT / n);
+    printf("Average TAT: %.2f \n", (float)totalTAT / n);
+}
+
+/* ##### dir*/
+#include <dirent.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    DIR *dir;
+    struct dirent *entry;
+
+    // Open current directory
+    dir = opendir(".");
+
+    if (dir == NULL) {
+        printf("Unable to open directory\n");
+        return 1;
+    }
+
+    printf("Contents of current directory:\n");
+
+    // Read entries one by one
+    while ((entry = readdir(dir)) != NULL) {
+        printf("%s\n", entry->d_name);
+    }
+
+    // Close directory
+    closedir(dir);
+
+    return 0;
+}
+/* ##### read write open close*/
+/*
+1. open source (O_RDONLY)
+2. open destination (O_WRONLY | O_CREAT | O_TRUNC, 0644)
+3. while(read > 0)
+       write
+4. close both
+*/
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main() {
+    int fd1, fd2, n;
+    char source[50], dest[50], buffer[1024];
+
+    printf("Enter source file: ");
+    scanf("%s", source);
+
+    printf("Enter destination file: ");
+    scanf("%s", dest);
+
+    fd1 = open(source, O_RDONLY);
+    if (fd1 < 0) {
+        printf("Cannot open source file\n");
+        exit(1);
+    }
+
+    fd2 = open(dest, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd2 < 0) {
+        printf("Cannot open destination file\n");
+        exit(1);
+    }
+
+    while ((n = read(fd1, buffer, sizeof(buffer))) > 0) {
+        write(fd2, buffer, n);
+    }
+
+    close(fd1);
+    close(fd2);
+
+    printf("File copied successfully\n");
+
+    return 0;
+}
+/* ##### stat sys*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <time.h>
+
+int main() {
+    struct stat s;
+    char file[50];
+
+    printf("Enter file name: ");
+    scanf("%s", file);
+
+    if (stat(file, &s) == -1) {
+        printf("Error getting file details\n");
+        return 1;
+    }
+
+    printf("\nFile Size: %ld bytes\n", s.st_size);
+
+    printf("Permissions:\n");
+
+    if (s.st_mode & S_IRUSR) printf("User has read permission\n");
+
+    if (s.st_mode & S_IWUSR) printf("User has write permission\n");
+
+    if (s.st_mode & S_IXUSR) printf("User has execute permission\n");
+
+    printf("Change Time: %s", ctime(&s.st_ctime));
+    printf("Last Modified: %s", ctime(&s.st_mtime));
+
+    return 0;
+}

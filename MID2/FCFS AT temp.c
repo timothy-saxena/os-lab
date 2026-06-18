@@ -1,4 +1,5 @@
-FCFS AT
+/* FCFS AT
+ */
 #include <stdio.h>
 
 int main()

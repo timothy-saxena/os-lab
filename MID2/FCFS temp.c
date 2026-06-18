@@ -1,5 +1,6 @@
-FCFS
+/* FCFS
 CODE 1 : FCFS WITHOUT ARRIVAL TIME
+ */
 #include <stdio.h>
 
 int main()
