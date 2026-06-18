@@ -1,4 +1,4 @@
-#include <stdio.h>
+/* #include <stdio.h>
 
 int main() {
     int numSeg;
@@ -33,4 +33,38 @@ int main() {
     }
 
     return 0;
+} */
+
+#include <stdio.h>
+
+int main() {
+    /*
+    1. i need the segment table
+    2. i will input segno & off
+    3. then just check condition and output
+
+     */
+
+    int noSeg;
+    printf("Enter number of segment: ");
+    scanf("%d", &noSeg);
+
+    int seg_table[10][2];
+    printf("Enter limit and base values: ");
+    for (int i = 0; i < noSeg; i++) {
+        scanf("%d %d", &seg_table[i][0], &seg_table[i][1]);
+    }
+
+    int s, off;
+    printf("Enter segment & off: ");
+    scanf("%d %d", &s, &off);
+
+    if (s < 0 || s > noSeg) {
+        printf("invalid segment");
+    } else if (off < 0 || off > seg_table[s][0]) {
+        printf("page fault");
+    } else {
+        int pa = off + seg_table[s][1];
+        printf("pa %d", pa);
+    }
 }
