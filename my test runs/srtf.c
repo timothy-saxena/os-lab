@@ -68,38 +68,42 @@ int main() {
     printf("Average TAT: %.2f \n", (float)totalTAT / n);
 }
 
-/* 
+/*
 SRTF schedule the processes each unit time
 */
 
+/*
 int completed = 0;
 int currentTime = 0;
 while(completed < n){
     int SJ_id = -1;
     int SJ_rem_tim = 999;
 
-    /* find the SJ */
+    // find the SJ
     for(int i = 0; i < n; i++){
-        /* process should have arrived */
-        /* process must not be completed */
-        /* process RT must be less that minRT */
-        if(arrivalTime[i] <= currentTime && remainingTime[i]>0 && remainingTime[i] < SJ_rem_tim){
-            SJ_id = i;
-            SJ_rem_tim = remainingTime[i];
+        // process should have arrived
+        // process must not be completed
+        // process RT must be less that minRT
+        if(arrivalTime[i] <= currentTime && remainingTime[i]>0 &&
+remainingTime[i] < SJ_rem_tim){ SJ_id = i; SJ_rem_tim = remainingTime[i];
         }
     }
-    /* incase there is no SJ */
+
+    // incase there is no SJ
     if(SJ_id == -1){
         currentTime++;
         continue;
     }
-    /* exe this Sj for 1 unit time */
+
+    // exe this Sj for 1 unit time
     remainingTime[SJ_id]--;
     currentTime++;
-    /* check if SJ_id is completed */
+
+    // check if SJ_id is completed
     if(remainingTime[SJ_id] == 0){
         completed++;
         turnaround_time[SJ_id] = currentTime - arrivalTime[SJ_id];
         wait_time[SJ_id] = turnaround_time[SJ_id]- burstTime[SJ_id];
     }
 }
+*/
